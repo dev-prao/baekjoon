@@ -1,0 +1,14 @@
+# N, M = map(int, input().split())
+# for x in range(M):
+#     i, j, k = map(int, input().split())
+
+# 구글링 코드
+n, m=map(int, input().split())
+box = [0]*n
+
+for _ in range(m) :
+    i,j,k = map(int, input().split())
+    for idx in range(i, j+1):
+        box[idx-1] = k
+for i in range(n):
+    print(box[i], end=' ')
