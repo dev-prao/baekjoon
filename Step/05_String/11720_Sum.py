@@ -13,3 +13,4 @@ for digit in num:
 
 # 숫자 N개의 합을 출력
 print(sum)
+
