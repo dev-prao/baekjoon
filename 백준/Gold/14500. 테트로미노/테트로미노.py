@@ -1,87 +1,82 @@
-n,m = map(int,input().split())
-a = [list(map(int,input().split())) for _ in range(n)]
+n, m = map(int, input().split())
+a = [list(map(int, input().split())) for _ in range(n)]
 ans = 0
 for i in range(n):
     for j in range(m):
-        if j+3 < m:
-            temp = a[i][j] + a[i][j+1] + a[i][j+2] + a[i][j+3]
+        # 1
+        if j + 3 < m:
+            temp = a[i][j] + a[i][j + 1] + a[i][j + 2] + a[i][j + 3]
             if ans < temp: ans = temp
-        
-        if i+3 < n:
-            temp = a[i][j] + a[i+1][j] + a[i+2][j] + a[i+3][j]
+        # 2
+        if i + 3 < n:
+            temp = a[i][j] + a[i + 1][j] + a[i + 2][j] + a[i + 3][j]
             if ans < temp: ans = temp
-        
-        if i+1 < n and j+2 < m:
-            temp = a[i][j] + a[i+1][j] + a[i+1][j+1] + a[i+1][j+2]
+        # 3
+        if i + 1 < n and j + 1 < m:
+            temp = a[i][j] + a[i + 1][j] + a[i][j + 1] + a[i + 1][j + 1]
             if ans < temp: ans = temp
-        
-        if i+2 < n and j+1 < m:
-            temp = a[i][j] + a[i][j+1] + a[i+1][j] + a[i+2][j]
+        # 4
+        if i + 2 < n and j + 1 < m:
+            temp = a[i][j] + a[i + 1][j] + a[i + 2][j] + a[i][j + 1]
             if ans < temp: ans = temp
-        
-        if i+1 < n and j+2 < m:
-            temp = a[i][j] + a[i][j+1] + a[i][j+2] + a[i+1][j+2]
+        # 5
+        if i + 2 < n and j + 1 < m:
+            temp = a[i][j] + a[i + 1][j] + a[i + 2][j] + a[i + 1][j + 1]
             if ans < temp: ans = temp
-        
-        if i+2 < n and j-1 >= 0:
-            temp = a[i][j] + a[i+1][j] + a[i+2][j] + a[i+2][j-1]
+        # 6
+        if i + 2 < n and j + 1 < m:
+            temp = a[i][j] + a[i + 1][j] + a[i + 2][j] + a[i + 2][j + 1]
             if ans < temp: ans = temp
-        
-        if i-1 >= 0 and j+2 < m:
-            temp = a[i][j] + a[i][j+1] + a[i][j+2] + a[i-1][j+2]
+        # 7
+        if i + 2 < n and j - 1 >= 0:
+            temp = a[i][j - 1] + a[i][j] + a[i + 1][j] + a[i + 2][j]
             if ans < temp: ans = temp
-        
-        if i+2 < n and j+1 < m:
-            temp = a[i][j] + a[i+1][j] + a[i+2][j] + a[i+2][j+1]
+        # 8
+        if i + 2 < n and j - 1 >= 0:
+            temp = a[i + 1][j - 1] + a[i][j] + a[i + 1][j] + a[i + 2][j]
             if ans < temp: ans = temp
-        
-        if i+1 < n and j+2 < m:
-            temp = a[i][j] + a[i][j+1] + a[i][j+2] + a[i+1][j]
+        # 9
+        if i + 2 < n and j - 1 >= 0:
+            temp = a[i + 2][j - 1] + a[i][j] + a[i + 1][j] + a[i + 2][j]
             if ans < temp: ans = temp
-        
-        if i+2 < n and j+1 < m:
-            temp = a[i][j] + a[i][j+1] + a[i+1][j+1] + a[i+2][j+1]
+        # 10
+        if i + 1 < n and j + 2 < m:
+            temp = a[i][j] + a[i][j + 1] + a[i][j + 2] + a[i + 1][j]
             if ans < temp: ans = temp
-        
-        if i+1 < n and j+1 < m:
-            temp = a[i][j] + a[i][j+1] + a[i+1][j] + a[i+1][j+1]
+        # 11
+        if i + 1 < n and j + 2 < m:
+            temp = a[i][j] + a[i][j + 1] + a[i][j + 2] + a[i + 1][j + 1]
             if ans < temp: ans = temp
-        
-        if i-1 >= 0 and j+2 < m:
-            temp = a[i][j] + a[i][j+1] + a[i-1][j+1] + a[i-1][j+2]
+        # 12
+        if i + 1 < n and j + 2 < m:
+            temp = a[i][j] + a[i][j + 1] + a[i][j + 2] + a[i + 1][j + 2]
             if ans < temp: ans = temp
-        
-        if i+2 < n and j+1 < m:
-            temp = a[i][j] + a[i+1][j] + a[i+1][j+1] + a[i+2][j+1]
+        # 13
+        if i - 1 >= 0 and j + 2 < m:
+            temp = a[i][j] + a[i][j + 1] + a[i][j + 2] + a[i - 1][j]
             if ans < temp: ans = temp
-        
-        if i+1 < n and j+2 < m:
-            temp = a[i][j] + a[i][j+1] + a[i+1][j+1] + a[i+1][j+2]
+        # 14
+        if i - 1 >= 0 and j + 2 < m:
+            temp = a[i][j] + a[i][j + 1] + a[i][j + 2] + a[i - 1][j + 1]
             if ans < temp: ans = temp
-        
-        if i+2 < n and j-1 >= 0:
-            temp = a[i][j] + a[i+1][j] + a[i+1][j-1] + a[i+2][j-1]
+        # 15
+        if i - 1 >= 0 and j + 2 < m:
+            temp = a[i][j] + a[i][j + 1] + a[i][j + 2] + a[i - 1][j + 2]
             if ans < temp: ans = temp
-        
-        if j+2 < m:
-            temp = a[i][j] + a[i][j+1] + a[i][j+2]
-            if i-1 >= 0:
-                temp2 = temp + a[i-1][j+1]
-                if ans < temp2: ans = temp2
-            
-            if i+1 < n:
-                temp2 = temp + a[i+1][j+1]
-                if ans < temp2: ans = temp2
-            
-        
-        if i+2 < n:
-            temp = a[i][j] + a[i+1][j] + a[i+2][j]
-            if j+1 < m:
-                temp2 = temp + a[i+1][j+1]
-                if ans < temp2: ans = temp2
-            
-            if j-1 >= 0:
-                temp2 = temp + a[i+1][j-1]
-                if ans < temp2: ans = temp2
-            
+        # 16
+        if i + 1 < n and j + 2 < m:
+            temp = a[i][j] + a[i][j + 1] + a[i + 1][j + 1] + a[i + 1][j + 2]
+            if ans < temp: ans = temp
+        # 17
+        if i - 1 >= 0 and j + 2 < m:
+            temp = a[i][j] + a[i][j + 1] + a[i - 1][j + 1] + a[i - 1][j + 2]
+            if ans < temp: ans = temp
+        # 18
+        if i + 2 < n and j + 1 < m:
+            temp = a[i][j] + a[i + 1][j] + a[i + 1][j + 1] + a[i + 2][j + 1]
+            if ans < temp: ans = temp
+        # 19
+        if i + 2 < n and j - 1 < m:
+            temp = a[i][j] + a[i + 1][j - 1] + a[i + 1][j] + a[i + 2][j - 1]
+            if ans < temp: ans = temp
 print(ans)
