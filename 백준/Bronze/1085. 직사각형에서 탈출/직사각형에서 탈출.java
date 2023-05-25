@@ -1,14 +1,22 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int     x  = in.nextInt(), y = in.nextInt(), w = in.nextInt(), h = in.nextInt();
-        in.close();
-        int result = Math.min(Math.abs(x - w), Math.abs(y - h));
-        result = Math.min(result, x);
-        result = Math.min(result, y);
-
-        System.out.println(result);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        
+        int x = Integer.parseInt(st.nextToken());
+        int y = Integer.parseInt(st.nextToken());
+        int w = Integer.parseInt(st.nextToken());
+        int h = Integer.parseInt(st.nextToken());
+        
+        int x_min = Math.min(x,w-x);
+        int y_min = Math.min(y,h-y);
+        
+        System.out.println(Math.min(x_min,y_min));
     }
 }
