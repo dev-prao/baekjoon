@@ -2,10 +2,15 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int A = sc.nextInt();
-        int B = sc.nextInt();
-        sc.close();
-        System.out.println((A+B)*(A-B));
+        Scanner scanner = new Scanner(System.in);
+        int A = scanner.nextInt();
+        int B = scanner.nextInt();
+        
+        int result = calculate(A, B);
+        System.out.println(result);
+    }
+    
+    public static int calculate(int A, int B) {
+        return (A + B) * (A - B);
     }
 }
