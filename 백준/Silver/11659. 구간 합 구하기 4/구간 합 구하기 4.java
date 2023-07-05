@@ -1,31 +1,26 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int[] sumArr = new int[n];
-        for (int i = 0 ; i < n ; i++) {
-            int temp = sc.nextInt();
-            if (i == 0) {
-                sumArr[i] = temp;
-            } else {
-                sumArr[i] = sumArr[i - 1] + temp;
-            }
+        int n = Integer.parseInt(st.nextToken()); // 숫자 갯수
+        int m = Integer.parseInt(st.nextToken()); // 질의 갯수
+
+        long[] S = new long[n + 1]; // 구간합 배열 선언
+        st = new StringTokenizer(br.readLine());
+        for (int i = 1 ; i <= n ; i++) {
+            S[i] = S[i - 1] + Integer.parseInt(st.nextToken());
         }
-
-
-        for (int i = 0 ; i < m ; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            if (a == 1) {
-                System.out.println(sumArr[b - 1]);
-            } else {
-                System.out.println(sumArr[b - 1] - sumArr[a - 2]);
-            }
+        for (int q = 0 ; q < m ; q++) {
+            st = new StringTokenizer(br.readLine());
+            int i = Integer.parseInt(st.nextToken());
+            int j = Integer.parseInt(st.nextToken());
+            System.out.println(S[j] - S[i - 1]);
         }
-        sc.close();
     }
 }
