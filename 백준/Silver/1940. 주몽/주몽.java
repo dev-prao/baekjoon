@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -8,24 +9,30 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
         int m = Integer.parseInt(br.readLine());
+        int A[] = new int[n];
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int A[] = new int[n];
+        br.close();
         for (int i = 0 ; i < n ; i++) {
             A[i] = Integer.parseInt(st.nextToken());
         }
+        Arrays.sort(A);
 
         int count = 0;
+        int i = 0;
+        int j = n - 1;
 
-        for (int i = 0 ; i < n - 1 ; i++) {
-            for (int j = i + 1 ; j < n ; j++) {
-                if (A[i] + A[j] == m) {
-                    count++;
-                }
+        while (i < j) {
+            if (A[i] + A[j] < m) {
+                i++;
+            } else if (A[i] + A[j] > m) {
+                j--;
+            } else {
+                count++;
+                i++;
+                j--;
             }
         }
         System.out.println(count);
-
-
     }
 }
