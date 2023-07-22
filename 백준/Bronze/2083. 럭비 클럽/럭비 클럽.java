@@ -10,7 +10,7 @@ public class Main {
             int age = Integer.parseInt(st.nextToken());
             int weight = Integer.parseInt(st.nextToken());
             String level = "";
-            if (name == "#" || age == 0 || weight == 0) break;
+            if (name.equals("#") && age == 0 && weight == 0) break;
             if (age > 17 || weight >= 80) {
                 level = "Senior";
             } else {
