@@ -1,28 +1,21 @@
-import java.util.*;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Main {
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[] a = new int[4];
-        for (int i = 0 ; i < 4 ; i++) {
-            a[i] = i;
-        }
-
-        int[] d = new int[11];
-        d[0] = 0;
-        d[1] = 1;
-        d[2] = 2;
-        d[3] = 4;
-        for (int i = 4 ; i < 11 ; i++) {
-            d[i] = d[i-1] + d[i-2] + d[i-3];
-        }
-
-        for (int i = 0 ; i < n ; i++) {
-            System.out.println(d[sc.nextInt()]);
-        }
-        sc.close();
-    }
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		int[] dp = new int[11]; // 인덱스는 0부터 시작이라... 차라리 공간을 하나 더 두기
+		dp[1] = 1;
+		dp[2] = 2;
+		dp[3] = 4;
+		for (int j=4; j<=10; j++) {
+			dp[j] = dp[j-3] + dp[j-2] + dp[j-1]; // 4 = 1, 2, 3 // 점화식
+		}
+		for (int i = 0; i < T; i++) {
+			int n = Integer.parseInt(br.readLine());
+			System.out.println(dp[n]);
+		}
+	}
 }
