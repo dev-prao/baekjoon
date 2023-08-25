@@ -1,85 +1,98 @@
-import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.StringTokenizer;
+import java.util.Arrays;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        int testCaseCount = Integer.parseInt(reader.readLine()); // 테스트 케이스 진행 횟수
-
-        ArrayList<Point> pointsList = new ArrayList<>(); // points 리스트를 반복문 밖에서 선언
-
-        for (int i = 0; i < testCaseCount; i++) {
-            // 한 테스트 케이스마다 4개의 점 정보 입력
-            for (int j = 0; j < 4; j++) {
-                StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
-                int x = Integer.parseInt(tokenizer.nextToken());
-                int y = Integer.parseInt(tokenizer.nextToken());
-                pointsList.add(new Point(x, y));
-            }
-
-            pointsList.sort(new PointComparator()); // 정렬 기준을 활용하여 내림차순 정렬
-
-            // 각 점의 좌표 추출
-            int x0 = pointsList.get(0).x;
-            int x1 = pointsList.get(1).x;
-            int x2 = pointsList.get(2).x;
-            int x3 = pointsList.get(3).x;
-
-            int y0 = pointsList.get(0).y;
-            int y1 = pointsList.get(1).y;
-            int y2 = pointsList.get(2).y;
-            int y3 = pointsList.get(3).y;
-
-            // 점 간의 거리 제곱 계산
-            int powD01 = (int) (Math.pow(x0 - x1, 2) + Math.pow(y0 - y1, 2));
-            int powD02 = (int) (Math.pow(x0 - x2, 2) + Math.pow(y0 - y2, 2));
-            int powD13 = (int) (Math.pow(x1 - x3, 2) + Math.pow(y1 - y3, 2));
-            int powD23 = (int) (Math.pow(x2 - x3, 2) + Math.pow(y2 - y3, 2));
-            int powD12 = (int) (Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-
-            // 직사각형 여부 판단
-            boolean isRectangle = powD12 == powD01 + powD02;
-
-            // 직사각형이면서 네 변의 길이가 모두 같은지 검사
-            if (isRectangle && (powD01 == powD02) && (powD02 == powD13) && (powD13 == powD23)) {
-                System.out.println(1); // 직사각형이면서 네 변의 길이가 모두 같을 경우
-            } else {
-                System.out.println(0); // 직사각형이 아닐 경우
-            }
-
-            pointsList.clear(); // 다음 테스트 케이스를 위해 리스트 초기화
-        }
-    }
-
-    // 좌표를 저장하는 클래스
-    private static class Point {
+    // 좌표를 나타내는 클래스
+    class Position {
         int x, y;
 
-        Point(int x, int y) {
+        // 생성자
+        public Position(int x, int y) {
             this.x = x;
             this.y = y;
         }
-
-        @Override
-        public String toString() {
-            return "(" + x + ", " + y + ")";
-        }
     }
 
-    // 점을 내림차순으로 정렬하기 위한 Comparator 구현
-    private static class PointComparator implements Comparator<Point> {
-        @Override
-        public int compare(Point p1, Point p2) {
-            if (p1.x != p2.x) {
-                return p2.x - p1.x;
-            } else {
-                return p2.y - p1.y;
+    // 두 좌표 사이의 거리 계산 메서드
+    private long calculateDistance(Position p1, Position p2) {
+        return 1L * (p1.x - p2.x) * (p1.x - p2.x) + 1L * (p1.y - p2.y) * (p1.y - p2.y);
+    }
+
+    // 문제 해결 메서드
+    private void solve() throws Exception {
+        int testCaseCount = nextInt(); // 테스트 케이스 개수 입력
+        StringBuilder sb = new StringBuilder(); // 결과를 저장할 StringBuilder 생성
+
+        // 각 테스트 케이스에 대하여 반복
+        while (testCaseCount-- > 0) {
+            Position[] positions = new Position[4]; // 4개의 좌표를 저장할 배열 생성
+            for (int i = 0; i < 4; i++) {
+                positions[i] = new Position(nextInt(), nextInt()); // 좌표 정보 입력
             }
+
+            long[] distances = new long[6]; // 거리를 저장할 배열 생성
+            int idx = 0;
+            for (int i = 0; i < 4; i++) {
+                for (int j = i + 1; j < 4; j++) {
+                    distances[idx++] = calculateDistance(positions[i], positions[j]); // 거리 계산 후 배열에 저장
+                }
+            }
+
+            Arrays.sort(distances); // 거리 배열을 오름차순으로 정렬
+            
+            // 모든 거리가 같은 경우 직사각형이므로 1, 아닌 경우 0을 결과에 추가
+            if (distances[0] == distances[1] && distances[1] == distances[2] &&
+                distances[2] == distances[3] && distances[4] == distances[5]) {
+                sb.append(1);
+            } else {
+                sb.append(0);
+            }
+            sb.append('\n'); // 개행문자 추가
         }
+
+        System.out.print(sb); // 결과 출력
+    }
+
+    // 메인 메서드
+    public static void main(String[] args) throws Exception {
+        initInput(); // 입력 초기화
+        new Main().solve(); // 문제 해결 메서드 호출
+    }
+
+    // 입력 처리를 위한 상수 및 변수
+    private static final int DEFAULT_BUFFER_SIZE = 1 << 16;
+    private static DataInputStream inputStream;
+    private static byte[] buffer;
+    private static int curIdx, maxIdx;
+
+    // 입력 초기화
+    private static void initInput() {
+        inputStream = new DataInputStream(System.in);
+        buffer = new byte[DEFAULT_BUFFER_SIZE];
+        curIdx = maxIdx = 0;
+    }
+
+    // 다음 정수를 입력받는 메서드
+    private static int nextInt() throws IOException {
+        int ret = 0;
+        byte c = read();
+        while (c <= ' ') c = read();
+        boolean neg = (c == '-');
+        if (neg) c = read();
+        do {
+            ret = ret * 10 + c - '0';
+        } while ((c = read()) >= '0' && c <= '9');
+        if (neg) return -ret;
+        return ret;
+    }
+
+    // 입력 스트림으로부터 바이트를 읽는 메서드
+    private static byte read() throws IOException {
+        if (curIdx == maxIdx) {
+            maxIdx = inputStream.read(buffer, curIdx = 0, DEFAULT_BUFFER_SIZE);
+            if (maxIdx == -1) buffer[0] = -1;
+        }
+        return buffer[curIdx++];
     }
 }
