@@ -28,7 +28,7 @@ public class Main {
             String input = br.readLine();
             for (int j = 0; j < C; j++) {
                 village[i][j] = input.charAt(j);
-                if(village[i][j] == 'k') {
+                if (village[i][j] == 'k') {
                     sheeps++;
                 }
                 if (village[i][j] == 'v') {
@@ -42,17 +42,16 @@ public class Main {
                 if ((village[i][j] == 'k' || village[i][j] == 'v') && !isChecked[i][j]) {
                     sheep = 0;
                     wolf = 0;
-                    if(village[i][j] == 'k') {
+                    if (village[i][j] == 'k') {
                         sheep = 1;
                     }
-                    if(village[i][j] == 'v') {
+                    else if (village[i][j] == 'v') {
                         wolf = 1;
                     }
                     dfs(i, j);
                     if (sheep > wolf) {
                         wolves -= wolf;
-                    }
-                    if(sheep <= wolf) {
+                    } else {
                         sheeps -= sheep;
                     }
                 }
@@ -67,7 +66,7 @@ public class Main {
         for (int i = 0; i < 4; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
-            if(isChecked[nx][ny] || isOut(nx, ny) || village[nx][ny] == '#') {
+            if (isChecked[nx][ny] || isOut(nx, ny) || village[nx][ny] == '#') {
                 continue;
             }
             if (village[nx][ny] == 'k') {
