@@ -6,23 +6,21 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N;
-    static int M;
     static List<List<Integer>> relation;
     static boolean[] isChecked;
     static int result = 0;
-    static int standardDepth = 4;
+    private static final int STANDARD_DEPTH = 4;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
         relation = new ArrayList<>();
         for (int i = 0; i < N; i++) {
             relation.add(new ArrayList<>());
         }
         isChecked = new boolean[N];
-        M = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
@@ -41,14 +39,14 @@ public class Main {
     }
 
     private static void dfs(int node, int depth) {
-        if (depth == standardDepth) {
+        if (depth == STANDARD_DEPTH) {
             result = 1;
             return;
         }
         isChecked[node] = true;
-        for (int i : relation.get(node)) {
-            if (!isChecked[i]) {
-                dfs(i, depth + 1);
+        for (int next : relation.get(node)) {
+            if (!isChecked[next]) {
+                dfs(next, depth + 1);
             }
         }
         isChecked[node] = false;
