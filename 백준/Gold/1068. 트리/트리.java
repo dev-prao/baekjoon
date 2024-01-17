@@ -1,60 +1,59 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
 
-	static int N, root, count;
-	static int[] parents;
+	static List<Integer>[] graph;
 	static boolean[] isVisited;
+	static int deletedNode;
+	static int root;
+	static int count = 0;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(br.readLine());
-		parents = new int[N];
+		int N = Integer.parseInt(br.readLine());
+		graph = new ArrayList[N];
 		isVisited = new boolean[N];
 
-		StringTokenizer st = new StringTokenizer(br.readLine());
-
 		for (int i = 0; i < N; i++) {
-			int node = Integer.parseInt(st.nextToken());
-			parents[i] = node;
-			if (node == -1) {
-				root = i;
-			}
+			graph[i] = new ArrayList<>();
 		}
 
-		int deleteNode = Integer.parseInt(br.readLine());
-		delete(deleteNode);
-
-		count = 0;
-		countLeaf(root);
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			int node = Integer.parseInt(st.nextToken());
+			if (node == -1) {
+				root = i;
+				continue;
+			}
+			graph[node].add(i);
+		}
+		deletedNode = Integer.parseInt(br.readLine());
+		dfs(root);
 		System.out.println(count);
 		br.close();
 	}
 
-	private static void countLeaf(int index) {
-		boolean isLeaf = true;
-		isVisited[index] = true;
-		if (parents[index] != -2) {
-			for (int i = 0; i < N; i++) {
-				if (parents[i] == index && !isVisited[i]) {
-					countLeaf(i);
-					isLeaf = false;
-				}
-			}
-			if (isLeaf) {
+	private static void dfs(int node) {
+		if (node == deletedNode) {
+			return;
+		}
+		isVisited[node] = true;
+
+		if (graph[node].isEmpty()) {
+			count++;
+		}
+
+		for (int child : graph[node]) {
+			if (graph[node].size() == 1 && child == deletedNode) {
 				count++;
 			}
-		}
-	}
-
-	private static void delete(int index) {
-		parents[index] = -2;
-		for (int i = 0; i < N; i++) {
-			if (parents[i] == index) {
-				delete(i);
+			if (!isVisited[child]) {
+				dfs(child);
 			}
 		}
 	}
