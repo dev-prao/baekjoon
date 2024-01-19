@@ -46,6 +46,7 @@ public class Main {
 				cloud.y = (N + (cloud.y + move[d][1] * s) % N) % N;
 				bucket[cloud.x][cloud.y]++;
 			}
+
 			while (!clouds.isEmpty()) {
 				Cloud cloud = clouds.poll();
 				int cnt = 0;
