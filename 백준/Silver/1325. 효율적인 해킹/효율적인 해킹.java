@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +10,8 @@ import java.util.StringTokenizer;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		// BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringBuilder sb = new StringBuilder();
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
@@ -49,7 +48,7 @@ public class Main {
 					if (visit[i][relation[target].get(j)]) {
 						continue;
 					}
-					if (relation[target].get(j) < i) {
+					if (relation[target].get(j) < i) { //탐색이 완료된 경우
 						for (int k = 1; k <= N; k++) {
 							if (visit[i][k]) {
 								continue;
@@ -69,11 +68,10 @@ public class Main {
 
 		for (int i = 1; i < N + 1; i++) {
 			if (answer[i] == max) {
-				bw.write(i + " ");
+				sb.append(i + " ");
 			}
 		}
-		bw.flush();
-		bw.close();
+		System.out.println(sb);
 		br.close();
 	}
 }
