@@ -10,7 +10,6 @@ import java.util.StringTokenizer;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		// BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringBuilder sb = new StringBuilder();
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		int N = Integer.parseInt(st.nextToken());
@@ -48,7 +47,7 @@ public class Main {
 					if (visit[i][relation[target].get(j)]) {
 						continue;
 					}
-					if (relation[target].get(j) < i) { //탐색이 완료된 경우
+					if (relation[target].get(j) < i) {
 						for (int k = 1; k <= N; k++) {
 							if (visit[i][k]) {
 								continue;
