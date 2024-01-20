@@ -10,8 +10,6 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-
-	static int N, M;
 	static int[] answer;
 	static boolean[] visit;
 	static List<Integer>[] relation;
@@ -20,8 +18,8 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
 
 		answer = new int[N + 1];
 		relation = new ArrayList[N + 1];
