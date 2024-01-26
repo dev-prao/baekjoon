@@ -3,16 +3,19 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		int N = Integer.parseInt(br.readLine());
-		int[] soldiers = Arrays.stream(br.readLine().split(" "))
-			.mapToInt(Integer::parseInt)
-			.toArray();
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int[] soldiers = new int[N];
+		for (int i = 0; i < N; i++) {
+			soldiers[i] = Integer.parseInt(st.nextToken());
+		}
+
 		int[] dp = new int[N];
 		dp[0] = 1;
 		int answer = 1;
