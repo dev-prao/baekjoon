@@ -1,19 +1,20 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
+import java.io.OutputStreamWriter;
 import java.util.Stack;
 
-// https://www.acmicpc.net/problem/18258
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(bf.readLine());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int N = Integer.parseInt(br.readLine());
         Stack<Integer> stack = new Stack<>();
         StringBuilder sb = new StringBuilder(); // 출력의 시간을 줄이기 위해 한 번에 출력
         for (int i = 0; i < N; i++) {
-            String[] command = bf.readLine().split(" ");
+            String[] command = br.readLine().split(" ");
             switch (command[0]) {
                 case "1":
                     int X = Integer.parseInt(command[1]);
@@ -25,6 +26,8 @@ public class Main {
                 case "5": sb.append(!stack.isEmpty() ? stack.peek() + "\n" : -1 + "\n"); break;
             }
         }
-        System.out.print(sb);
+        bw.write(sb.toString());
+        bw.close();
+        br.close();
     }
 }
