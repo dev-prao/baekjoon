@@ -43,7 +43,7 @@ public class Main {
 	
     static void check(int startIndex, int count) {
         if (count == K - 5) {
-        	getMaxCount(count);
+        	getMaxCount();
             return;
         }
 
@@ -56,7 +56,7 @@ public class Main {
         }
     }
     
-    static void getMaxCount(int count) {
+    static void getMaxCount() {
         int curr = 0;
         
         for (int i = 0; i < N; i++) {
