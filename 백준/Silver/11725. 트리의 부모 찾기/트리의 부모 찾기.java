@@ -10,19 +10,18 @@ import java.util.StringTokenizer;
 public class Main {
 
 	static int N;
+	static int count = 0;
 	static int[] parents;
-	static boolean[] visit;
 	static List<Integer>[] tree;
-	static StringBuilder sb = new StringBuilder();
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringBuilder sb = new StringBuilder();
 		StringTokenizer st;
 
 		N = Integer.parseInt(br.readLine());
 		parents = new int[N + 1];
-		visit = new boolean[N + 1];
 		tree = new ArrayList[N + 1];
 		for (int i = 1; i <= N; i++) {
 			tree[i] = new ArrayList<>();
@@ -36,7 +35,7 @@ public class Main {
 			tree[v].add(u);
 		}
 
-		dfs(1, 0);
+		dfs(1);
 		for (int i = 2; i <= N; i++) {
 			sb.append(parents[i]).append("\n");
 		}
@@ -46,17 +45,16 @@ public class Main {
 		br.close();
 	}
 
-	static void dfs(int node, int count) {
+	static void dfs(int node) {
 		if (count == N) {
 			return;
 		}
 
 		for (int next : tree[node]) {
-			if (!visit[next]) {
-				visit[next] = true;
+			if (parents[next] == 0) {
 				parents[next] = node;
-				dfs(next, count + 1);
-				visit[next] = false;
+				count++;
+				dfs(next);
 			}
 		}
 	}
