@@ -21,7 +21,7 @@ public class Main {
 			// 물고기 수 차이가 K 이하가 되면 그만둔다.
 			if (getDifference(fishBall) <= K)
 				break;
-			// 횟수 카운팅
+			// 출력할 횟수 더한다.
 			answer++;
 //			// step1
 //			System.out.println("==================== 1 번 ====================");
@@ -46,8 +46,8 @@ public class Main {
 //				}
 //				System.out.println();
 //			}
-			// step4 2개 이상 쌓여있는 어항을 모두 공중 부양시킨 다음, 전체를 시계방향으로 90도 회전
-			// step4 공중 부양시킨 어항 중 가장 오른쪽에 있는 어항의 아래에 바닥에 있는 어항이 있을때까지 반복한다.
+			// step4 2개 이상 쌓여있는 어항을 모두 공중 부양시키고 전체를 시계방향 90도 회전
+			// 공중 부양시킨 어항 중 가장 오른쪽에 있는 어항의 아래에 바닥에 있는 어항이 있을때까지 반복한다.
 //			System.out.println("==================== 4 번 ====================");
 			int[][] step4 = rotateClock90(step3);
 //			for (int i = 0; i < step4.length; i++) {
@@ -73,7 +73,7 @@ public class Main {
 //				System.out.print("[" + step6[i] + "]");
 //			}
 //			System.out.println();
-//			// step7 가운데를 중심으로 왼쪽 N/2개를 공중 부양시켜 전체를 시계 방향으로 180도 회전
+//			// step7 가운데를 중심으로 왼쪽 N/2개를 공중 부양시켜 전체를 시계 방향 180도 회전
 //			System.out.println("==================== 7 번 ====================");
 			int[][] step7 = rotateClock180(step6);
 //			for (int i = 0; i < step7.length; i++) {
@@ -92,7 +92,7 @@ public class Main {
 //				System.out.println();
 //			}
 //			
-//			// step9 다시 위에서 한 물고기 조절 작업을 수행
+//			// step9 어항을 바닥에 일렬로 놓는다.
 //			System.out.println("==================== 9 번 ====================");
 //			int[] step9 = lineUp(step7);
 //			for (int i = 0; i < step9.length; i++) {
@@ -129,7 +129,7 @@ public class Main {
 		int[][] res = step3;
 		while (true) {
 			int targetC = 0;
-			// 2개 이상인 열의 마지막 위치를 찾는다.
+			// 2개 이상(공중부양)할 마지막 위치를 찾음
 			for (int j = 0; j < res[0].length; ++j) {
 				if (res[res.length - 2][j] != 0)
 					targetC++;
@@ -144,7 +144,7 @@ public class Main {
 			int nc = res[0].length - targetC;
 			int[][] tmp = new int[nr][nc];
 
-			int sr = res.length - 1; // 밑에서 위로
+			int sr = res.length - 1; // 아래에서부터 위로 채움
 			int sc = 0;
 			boolean isLeftSide = true;
 
