@@ -1,9 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -21,9 +18,7 @@ public class Main {
 	static int[][] map;
 	static int[][] copyMap;
 	static boolean[] defender;
-	static boolean[] isAttack;
 	static Point[] defPoint;
-	static List<Point> atkPoint;
 	static int res = -1;
 	private static final int DEF_COUNT = 3;
 
@@ -37,16 +32,13 @@ public class Main {
 		copyMap = new int[N][M];
 		defender = new boolean[M];
 		defPoint = new Point[DEF_COUNT];
-		atkPoint = new ArrayList<>();
 		for (int r = 0; r < N; r++) {
 			st = new StringTokenizer(br.readLine());
 			for (int c = 0; c < M; c++) {
 				map[r][c] = Integer.parseInt(st.nextToken());
 				copyMap[r][c] = map[r][c];
-				if (map[r][c] == 1) atkPoint.add(new Point(r, c));
 			}
 		}
-		Collections.sort(atkPoint, (o1, o2) -> o1.r != o2.r ? o2.r - o1.r : o1.c - o2.c);
 		dfs(0, 0);
 		System.out.println(res);
 	}
@@ -63,8 +55,6 @@ public class Main {
 		if (idx == M && cnt != DEF_COUNT) return;
 		if (cnt == DEF_COUNT) {
 			init();
-			// System.out.println(Arrays.toString(defender));
-			// System.out.println(res);
 			res = Math.max(res, getScore());
 			return;
 		}
@@ -92,7 +82,6 @@ public class Main {
 				}
 			}
 			if (cnt == 0) break;
-			isAttack = new boolean[DEF_COUNT];
 			//적과 궁수의 거리 계산하여 공격할 수 있는지 확인
 			int[][] info = {{N, M, Integer.MAX_VALUE}, {N, M, Integer.MAX_VALUE},
 				{N, M, Integer.MAX_VALUE}};
@@ -123,14 +112,6 @@ public class Main {
 				}
 			}
 
-			// 공격이 끝나면 한칸 아래로
-			// System.out.println("====공격 후 맵====");
-			// for (int i = 0; i < N; i++) {
-			// 	for (int j = 0; j < M; j++) {
-			// 		System.out.print("[" + map[i][j] + "]");
-			// 	}
-			// 	System.out.println();
-			// }
 			for (int i = N - 1; i >= 0; i--) {
 				for (int j = 0; j < M; j++) {
 					if (map[i][j] == 1) {
@@ -140,14 +121,6 @@ public class Main {
 					}
 				}
 			}
-			// System.out.println("현재 점수 : " + score);
-			// System.out.println("====이동 후 맵====");
-			// for (int i = 0; i < N; i++) {
-			// 	for (int j = 0; j < M; j++) {
-			// 		System.out.print("[" + map[i][j] + "]");
-			// 	}
-			// 	System.out.println();
-			// }
 		}
 		return score;
 	}
