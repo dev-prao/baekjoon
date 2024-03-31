@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 
 public class Main {
@@ -10,7 +11,7 @@ public class Main {
 	static class Cheese {
 		int r, c;
 
-		Cheese(int r, int c) {
+		public Cheese(int r, int c) {
 			this.r = r;
 			this.c = c;
 		}
@@ -22,6 +23,8 @@ public class Main {
 
 	static int[] dr = {-1, 1, 0, 0};
 	static int[] dc = {0, 0, -1, 1};
+
+	static Deque<Cheese> q = new ArrayDeque<>();
 	static ArrayList<Cheese> meltingCheese = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException {
@@ -35,9 +38,7 @@ public class Main {
 		//get map
 		for (int i = 0; i < N; i++) {
 			input = br.readLine().split(" ");
-			for (int j = 0; j < M; j++) {
-				map[i][j] = Integer.parseInt(input[j]);
-			}
+			for (int j = 0; j < M; j++) map[i][j] = Integer.parseInt(input[j]);
 		}
 
 		int time = 0;
@@ -52,15 +53,11 @@ public class Main {
 			for (int r = 0; r < N; r++) {
 				for (int c = 0; c < M; c++) {
 					//get meltingCheese
-					if (map[r][c] == 1 && check(r, c)) {
-						meltingCheese.add(new Cheese(r, c));
-					}
+					if (map[r][c] == 1 && check(r, c)) meltingCheese.add(new Cheese(r, c));
 				}
 			}
 			//melt cheese
-			for (Cheese cs : meltingCheese) {
-				map[cs.r][cs.c] = 0;
-			}
+			for (Cheese cs : meltingCheese) map[cs.r][cs.c] = 0;
 			//init air area
 			for (int r = 0; r < N; r++) {
 				for (int c = 0; c < M; c++) {
@@ -85,9 +82,9 @@ public class Main {
 	public static boolean check(int r, int c) {
 		int cnt = 0;
 		boolean flag = false;
-		for (int i = 0; i < 4; i++) {
-			int nr = r + dr[i];
-			int nc = c + dc[i];
+		for (int d = 0; d < 4; d++) {
+			int nr = r + dr[d];
+			int nc = c + dc[d];
 			if (isValid(nr, nc) && map[nr][nc] == 2) cnt++;
 		}
 
@@ -96,8 +93,7 @@ public class Main {
 	}
 
 	public static void setAirArea(int r, int c) {
-		Deque<Cheese> q = new ArrayDeque<>();
-		visit = new boolean[N][M];
+		for (int i = 0; i < N; i++) Arrays.fill(visit[i], false);
 		q.add(new Cheese(r, c));
 		visit[r][c] = true;
 		map[r][c] = 2;
