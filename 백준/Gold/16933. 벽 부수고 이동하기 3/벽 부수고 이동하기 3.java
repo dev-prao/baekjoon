@@ -1,92 +1,81 @@
+import static java.lang.System.in;
+import static java.lang.System.out;
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
+	static int n, m, k;
+	static StringBuilder sb;
+	static char[][] map;
+	static int[][] delta = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+	static boolean[][][] isVisited;
 
-	static class Node {
-		int r, c, dist, crash, daytime;
-
-		public Node(int r, int c, int dist, int crash, int daytime) {
-			this.r = r;
-			this.c = c;
-			this.dist = dist;
-			this.crash = crash;
-			this.daytime = daytime;
-		}
-	}
-
-	static int N, M, K;
-	static int[][] dirs = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
-	static boolean[][] isWall;
-
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
-		K = Integer.parseInt(st.nextToken());
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
+		k = Integer.parseInt(st.nextToken());
 
-		isWall = new boolean[N][M];
-		for (int i = 0; i < N; i++) {
-			String input = br.readLine();
-			for (int j = 0; j < M; j++) {
-				isWall[i][j] = (input.charAt(j) == '0' ? true : false);
-			}
+		map = new char[n][m];
+		for (int i = 0; i < n; i++) {
+			map[i] = br.readLine().toCharArray();
 		}
 
-		bw.write(String.valueOf(getMinDist()));
-		br.close();
-		bw.close();
+		isVisited = new boolean[n][m][k + 1];
+		if (n == 1 && m == 1) {
+			out.println(1);
+		} else {
+			out.println(bfs());
+		}
 	}
 
-	private static int getMinDist() {
-		boolean[][][][] isVisited = new boolean[N][M][K + 1][2];
-		Queue<Node> q = new ArrayDeque<>();
-		q.add(new Node(0, 0, 1, 0, 0));
-		isVisited[0][0][0][0] = true;
+	static int bfs() {
+		Queue<int[]> q = new ArrayDeque<>();
+		q.add(new int[] { 0, 0, k, 1 });
 
 		while (!q.isEmpty()) {
-			Node cur = q.poll();
+			int[] poll = q.poll();
+			int r = poll[0];
+			int c = poll[1];
+			int crashCnt = poll[2];
+			int dist = poll[3];
 
-			if (cur.r == N - 1 && cur.c == M - 1) return cur.dist;
-
-			for (int[] dir : dirs) {
-				int nr = cur.r + dir[0];
-				int nc = cur.c + dir[1];
-
-				if (0 > nr || nr >= N || 0 > nc || nc >= M) continue;
-
-				if (isWall[nr][nc] && cur.daytime == 0 && !isVisited[nr][nc][cur.crash][cur.daytime + 1]) {
-					q.add(new Node(nr, nc, cur.dist + 1, cur.crash, cur.daytime + 1));
-					isVisited[nr][nc][cur.crash][cur.daytime + 1] = true;
+			for (int d = 0; d < 4; d++) {
+				int dr = r + delta[d][0];
+				int dc = c + delta[d][1];
+				if (!isValid(dr, dc))
 					continue;
+				if (dr == n - 1 && dc == m - 1) {
+					return dist + 1;
 				}
-				if (isWall[nr][nc] && cur.daytime == 1 && !isVisited[nr][nc][cur.crash][cur.daytime - 1]) {
-					q.add(new Node(nr, nc, cur.dist + 1, cur.crash, cur.daytime - 1));
-					isVisited[nr][nc][cur.crash][cur.daytime - 1] = true;
+				if (isVisited[dr][dc][crashCnt])
 					continue;
-				}
-				if (!isWall[nr][nc] && cur.crash < K && cur.daytime == 0
-						&& !isVisited[nr][nc][cur.crash + 1][cur.daytime + 1]) {
-					q.add(new Node(nr, nc, cur.dist + 1, cur.crash + 1, cur.daytime + 1));
-					isVisited[nr][nc][cur.crash + 1][cur.daytime + 1] = true;
-					continue;
-				}
-				if (!isWall[nr][nc] && cur.crash < K && cur.daytime == 1
-						&& !isVisited[cur.r][cur.c][cur.crash][cur.daytime - 1]) {
-					q.add(new Node(cur.r, cur.c, cur.dist + 1, cur.crash, cur.daytime - 1));
-					isVisited[cur.r][cur.c][cur.crash][cur.daytime - 1] = true;
+				if (map[dr][dc] == '1' && crashCnt > 0) {
+					if (dist % 2 == 1) { // 낮
+						isVisited[dr][dc][crashCnt - 1] = true;
+						isVisited[dr][dc][crashCnt] = true;
+						q.add(new int[] { dr, dc, crashCnt - 1, dist + 1 });
+					}
+					if (dist % 2 == 0) { // 밤
+						q.add(new int[] { r, c, crashCnt, dist + 1 });
+					}
+				} else if (map[dr][dc] == '0') {
+					isVisited[dr][dc][crashCnt] = true;
+					q.add(new int[] { dr, dc, crashCnt, dist + 1 });
 				}
 			}
 		}
-
 		return -1;
+	}
+
+	private static boolean isValid(int r, int c) {
+		return 0 <= r && r < n && 0 <= c && c < m;
 	}
 }
