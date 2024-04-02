@@ -28,12 +28,12 @@ public class Main {
 			map[i] = br.readLine().toCharArray();
 		}
 
-		isVisited = new boolean[n][m][k + 1];
+		isVisited = new boolean[k + 1][n][m];
 		if (n == 1 && m == 1) {
 			out.println(1);
-		} else {
-			out.println(bfs());
+			return;
 		}
+		out.println(bfs());
 	}
 
 	static int bfs() {
@@ -48,34 +48,34 @@ public class Main {
 			int dist = poll[3];
 
 			for (int d = 0; d < 4; d++) {
-				int dr = r + delta[d][0];
-				int dc = c + delta[d][1];
-				if (!isValid(dr, dc))
+				int nr = r + delta[d][0];
+				int nc = c + delta[d][1];
+				if (!isValid(nr, nc))
 					continue;
-				if (dr == n - 1 && dc == m - 1) {
-					return dist + 1;
-				}
-				if (isVisited[dr][dc][crashCnt])
-					continue;
-				if (map[dr][dc] == '1' && crashCnt > 0) {
+				
+				if (nr == n - 1 && nc == m - 1) return dist + 1;
+				
+				if (isVisited[crashCnt][nr][nc]) continue;
+
+				if (map[nr][nc] == '1' && crashCnt > 0) {
 					if (dist % 2 == 1) { // 낮
-						isVisited[dr][dc][crashCnt - 1] = true;
-						isVisited[dr][dc][crashCnt] = true;
-						q.add(new int[] { dr, dc, crashCnt - 1, dist + 1 });
+						isVisited[crashCnt - 1][nr][nc] = true; //방문 처리
+						isVisited[crashCnt][nr][nc] = true; //??
+						q.add(new int[] { nr, nc, crashCnt - 1, dist + 1 });
 					}
 					if (dist % 2 == 0) { // 밤
 						q.add(new int[] { r, c, crashCnt, dist + 1 });
 					}
-				} else if (map[dr][dc] == '0') {
-					isVisited[dr][dc][crashCnt] = true;
-					q.add(new int[] { dr, dc, crashCnt, dist + 1 });
+				} else if (map[nr][nc] == '0') {
+					isVisited[crashCnt][nr][nc] = true;
+					q.add(new int[] { nr, nc, crashCnt, dist + 1 });
 				}
 			}
 		}
 		return -1;
 	}
 
-	private static boolean isValid(int r, int c) {
+	static boolean isValid(int r, int c) {
 		return 0 <= r && r < n && 0 <= c && c < m;
 	}
 }
