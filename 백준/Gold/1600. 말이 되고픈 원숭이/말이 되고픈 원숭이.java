@@ -24,6 +24,11 @@ public class Main {
                 map[r][c] = st.nextToken().charAt(0) - '0';
             }
         }
+        
+        if(map[h - 1][w - 1] == 1) {
+        	System.out.println(-1);
+            return;
+        }
 
         boolean[][][] isVisited = new boolean[k + 1][h][w];
         Deque<int[]> q = new ArrayDeque<int[]>();
