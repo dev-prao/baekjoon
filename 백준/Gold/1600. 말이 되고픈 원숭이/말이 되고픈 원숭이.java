@@ -25,6 +25,11 @@ public class Main {
             }
         }
         
+        if(w == 1 && h == 1 && map[0][0] == 0) {
+        	System.out.println(0);
+        	return;
+        }
+        
         if(map[h - 1][w - 1] == 1) {
         	System.out.println(-1);
             return;
