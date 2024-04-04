@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.StringTokenizer;
 
@@ -24,23 +25,15 @@ public class Main {
                 map[r][c] = st.nextToken().charAt(0) - '0';
             }
         }
-        
-        if(w == 1 && h == 1 && map[0][0] == 0) {
-        	System.out.println(0);
-        	return;
-        }
-        
-        if(map[h - 1][w - 1] == 1) {
-        	System.out.println(-1);
-            return;
-        }
 
-        boolean[][][] isVisited = new boolean[k + 1][h][w];
+        int[][] isVisited = new int[h][w];
+        for(int r = 0; r < h; r++) {
+            Arrays.fill(isVisited[r], 987654321);
+        }
         Deque<int[]> q = new ArrayDeque<int[]>();
-        isVisited[0][0][0] = true;
-        q.offer(new int[] { 0, 0, 0 });
+        isVisited[0][0] = 10;
+        q.offer(new int[] { 0, 0, 0, 10 });
         int ans = -1;
-        int curDist = 0;
 
         while (ans == -1 && !q.isEmpty()) {
             int curIter = q.size();
@@ -50,9 +43,10 @@ public class Main {
                 int curJump = curPos[0];
                 int curR = curPos[1];
                 int curC = curPos[2];
+                int moveCnt = curPos[3];
 
                 if (curR == h - 1 && curC == w - 1) {
-                    ans = curDist;
+                    ans = moveCnt - 10;
                     break;
                 }
 
@@ -60,9 +54,9 @@ public class Main {
                     int nr = curR + dr[d];
                     int nc = curC + dc[d];
 
-                    if (curJump <= k && nr >= 0 && nr < h && nc >= 0 && nc < w && map[nr][nc] == 0 && !isVisited[curJump][nr][nc]) {
-                        isVisited[curJump][nr][nc] = true;
-                        q.offer(new int[] { curJump, nr, nc });
+                    if (curJump <= k && nr >= 0 && nr < h && nc >= 0 && nc < w && map[nr][nc] == 0 && curJump < isVisited[nr][nc]) {
+                        isVisited[nr][nc] = curJump;
+                        q.offer(new int[] { curJump, nr, nc, moveCnt+1 });
                     }
                 }
 
@@ -70,15 +64,22 @@ public class Main {
                     int nr = curR + dr[d];
                     int nc = curC + dc[d];
 
-                    if (curJump < k && nr >= 0 && nr < h && nc >= 0 && nc < w && map[nr][nc] == 0 && !isVisited[curJump + 1][nr][nc]) {
-                        isVisited[curJump + 1][nr][nc] = true;
-                        q.offer(new int[] { curJump + 1, nr, nc });
+                    if (curJump < k && nr >= 0 && nr < h && nc >= 0 && nc < w && map[nr][nc] == 0 && curJump + 1 < isVisited[nr][nc]) {
+                        isVisited[nr][nc] = curJump + 1;
+                        q.offer(new int[] { curJump + 1, nr, nc, moveCnt + 1 });
                     }
                 }
             }
-
-            curDist++;
         }
+        
+//        for(int r = 0; r < h; r++) {
+//            for(int c = 0; c < w; c++) {
+//                int res = isVisited[r][c];
+//                res = res == Integer.MAX_VALUE ? 0 : res;
+//                System.out.printf("%2d ", res);
+//            }
+//            System.out.println();
+//        }
 
         System.out.println(ans);
         br.close();
