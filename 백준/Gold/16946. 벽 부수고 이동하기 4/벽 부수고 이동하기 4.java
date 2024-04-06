@@ -57,7 +57,7 @@ public class Main {
 					int nc = c + delta[d][1];
 					if(isOutOfMap(nr,nc) || !visit[nr][nc] || set.contains(levelMap[nr][nc])) continue;
 					set.add(levelMap[nr][nc]);
-					map[r][c] += map[nr][nc] % 10;
+					map[r][c] += map[nr][nc];
 				}
 				map[r][c] %= 10;
 			}
