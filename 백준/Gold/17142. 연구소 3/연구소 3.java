@@ -1,10 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -27,6 +28,8 @@ public class Main {
 	static int[][] virus;
 	static Node[] active;
 	static List<Node> viruses;
+	static boolean[][] visit;
+	static Deque<Node> queue = new ArrayDeque<>();
 
 	static int[] dr = {-1, 1, 0, 0};
 	static int[] dc = {0, 0, -1, 1};
@@ -39,6 +42,7 @@ public class Main {
 		viruses = new ArrayList<>();
 		virus = new int[N][N];
 		active = new Node[M];
+		visit = new boolean[N][N];
 		empty = 0;
 		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(in.readLine());
@@ -73,13 +77,17 @@ public class Main {
 	}
 
 	private static void spread(int empty) {
-		Queue<Node> queue = new LinkedList<>();
-		boolean[][] visit = new boolean[N][N];
+		queue.clear();
+		for (int i = 0; i < N; i++) {
+			Arrays.fill(visit[i], false);
+		}
+
 		for (int i = 0; i < M; i++) {
 			Node v = active[i];
 			visit[v.r][v.c] = true;
 			queue.add(v);
 		}
+
 		while (!queue.isEmpty()) {
 			int size = queue.size();
 			for (int j = 0; j < size; j++) {
