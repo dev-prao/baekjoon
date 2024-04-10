@@ -27,7 +27,7 @@ public class Main {
 
 	static int[][] virus;
 	static Node[] active;
-	static List<Node> viruses;
+	static List<Node> viruses = new ArrayList<>();
 	static boolean[][] visit;
 	static Deque<Node> queue = new ArrayDeque<>();
 
@@ -35,33 +35,32 @@ public class Main {
 	static int[] dc = {0, 0, -1, 1};
 
 	public static void main(String[] args) throws IOException {
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(in.readLine());
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		viruses = new ArrayList<>();
 		virus = new int[N][N];
-		active = new Node[M];
 		visit = new boolean[N][N];
+		active = new Node[M];
 		empty = 0;
 		for (int i = 0; i < N; i++) {
-			st = new StringTokenizer(in.readLine());
+			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < N; j++) {
 				virus[i][j] = Integer.parseInt(st.nextToken());
 				if (virus[i][j] == 2) {
 					viruses.add(new Node(i, j, 0));
+					continue;
 				}
-				if (virus[i][j] == 0) {
-					empty++;
-				}
+				if (virus[i][j] == 0) empty++;
 			}
 		}
 
-		if (empty == 0) System.out.println(0);
-		else {
-			comb(0, 0);
-			System.out.println(minTime == Integer.MAX_VALUE ? -1 : minTime);
+		if (empty == 0) {
+			System.out.println(0);
+			return;
 		}
+		comb(0, 0);
+		System.out.println(minTime == Integer.MAX_VALUE ? -1 : minTime);
 	}
 
 	private static void comb(int start, int depth) {
@@ -96,8 +95,10 @@ public class Main {
 					int nr = cur.r + dr[d];
 					int nc = cur.c + dc[d];
 
-					if (isOutOfMap(nr,nc) || visit[nr][nc] || virus[nr][nc] == 1) continue;
+					if (isOutOfMap(nr, nc) || visit[nr][nc] || virus[nr][nc] == 1) continue;
+
 					if (virus[nr][nc] == 0) empty--;
+
 					if (empty == 0) {
 						minTime = Math.min(minTime, cur.time + 1);
 						return;
