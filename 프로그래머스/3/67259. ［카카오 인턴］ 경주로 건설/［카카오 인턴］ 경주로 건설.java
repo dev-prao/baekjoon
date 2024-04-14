@@ -1,52 +1,51 @@
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
-class Solution {
+public class Solution {
+	static final int[] dr = {0, 1, 0, -1};  // 우, 하, 좌, 상
+	static final int[] dc = {1, 0, -1, 0};  // 우, 하, 좌, 상
 
-	static int[][] dir = new int[][] {{1, 0}, {0, 1}, {-1, 0}, {0, -1}}; //하,우,상,좌
-	static int[][] dp;
-	static int[] dirSeq = new int[] {0, 2, 1, 3}; //하,상,우,좌
-	static int minCost = Integer.MAX_VALUE;
 	static int N;
-	static boolean[][] isVisited;
 
 	public int solution(int[][] board) {
+		int answer;
 		N = board.length;
-		isVisited = new boolean[N][N];
-		dp = new int[N][N];
-		for (int r = 0; r < N; r++) {
-			Arrays.fill(dp[r], Integer.MAX_VALUE - 600);
-		}
 
-		dp[0][0] = 0;
-		dfs(board, 0, 0, -1, 0);
-		return minCost;
+		answer = bfs(board, 0); // 오른쪽
+		answer = Math.min(answer, bfs(board, 1));   // 아래쪽
+
+		return answer;
 	}
+    
+	static int bfs(int[][] board, int dir) {
+		int[][] dp = new int[N][N];
+		Queue<int[]> q = new ArrayDeque<>();
+		q.offer(new int[] {0, 0, dir, 0});  //r, c, preDir, cost
+		dp[0][0] = -1;
 
-	void dfs(int[][] board, int r, int c, int preDir, int curCost) {
-		if (r == N - 1 && c == N - 1) {
-			minCost = Math.min(minCost, curCost);
-			return;
-		}
+		while (!q.isEmpty()) {
+			int[] cur = q.poll();
+			int r = cur[0];
+			int c = cur[1];
+			int d = cur[2];
+			int cost = cur[3];
 
-		if (curCost >= minCost || curCost > dp[r][c] + 600) return;
-
-		dp[r][c] = curCost;
-
-		for (int seq : dirSeq) {
-			int[] d = dir[seq];
-			int nr = r + d[0];
-			int nc = c + d[1];
-
-			if (nr >= 0 && nr < N && nc >= 0 && nc < N && !isVisited[nr][nc]
-				&& board[nr][nc] != 1) {
-				isVisited[nr][nc] = true;
-				if (preDir == -1) {
-					dfs(board, nr, nc, seq, curCost + 100);
-				} else { //preDir % 2 == seq % 2 -> ex)0: 하, 상 / 1: 우, 좌 -> 0: 하, 우 / 1:상, 좌
-					dfs(board, nr, nc, seq, curCost + 100 + 500 * (preDir % 2 != seq % 2 ? 1 : 0));
+			for (int i = 0; i < 4; i++) {
+				int nr = r + dr[i];
+				int nc = c + dc[i];
+				if (nr >= 0 && nr < N && nc >= 0 && nc < N) {
+					if (board[nr][nc] == 0) {
+						int nCost = d == i ? cost + 100 : cost + 600;
+						if (dp[nr][nc] == 0 || nCost < dp[nr][nc]) {
+							dp[nr][nc] = nCost;
+							q.offer(new int[] {nr, nc, i, nCost});
+						}
+					}
 				}
-				isVisited[nr][nc] = false;
 			}
 		}
+
+		return dp[N - 1][N - 1];
 	}
 }
+
