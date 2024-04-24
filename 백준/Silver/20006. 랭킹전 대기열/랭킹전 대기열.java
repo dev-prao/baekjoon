@@ -8,6 +8,25 @@ import java.util.StringTokenizer;
 
 public class Main {
 
+	static class Player implements Comparable<Player> {
+		int lv;
+		String id;
+		boolean isInRoom;
+
+		public Player(int lv, String id) {
+			this.lv = lv;
+			this.id = id;
+		}
+
+		@Override
+		public int compareTo(Player o) {
+			return id.compareTo(o.id);
+		}
+	}
+	
+	static int lv;
+	static String id;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
@@ -20,25 +39,23 @@ public class Main {
 		for (int i = 0; i < p; i++) {
 			st = new StringTokenizer(br.readLine());
 
-			int level = Integer.parseInt(st.nextToken());
-			String id = st.nextToken();
-			players[i] = new Player(level, id);
+			lv = Integer.parseInt(st.nextToken());
+			id = st.nextToken();
+			players[i] = new Player(lv, id);
 		}
 
 		for (int i = 0; i < p; i++) {
 			List<Player> room = new ArrayList<>();
-			if (!players[i].flag) {
+			if (!players[i].isInRoom) {
 				for (int j = i; j < p; j++) {
-					if (room.size() == m) {
-						break;
-					}
-					int level = players[j].level;
-					String id = players[j].id;
+					if (room.size() == m) break;
+					lv = players[j].lv;
+					id = players[j].id;
 
-					if (!players[j].flag
-						&& players[i].level - 10 <= level && players[i].level + 10 >= level) {
-						players[j].flag = true;
-						room.add(new Player(level, id));
+					if (!players[j].isInRoom && players[i].lv - 10 <= lv
+						&& players[i].lv + 10 >= lv) {
+						players[j].isInRoom = true;
+						room.add(new Player(lv, id));
 					}
 				}
 
@@ -50,27 +67,11 @@ public class Main {
 				}
 
 				for (Player player : room) {
-					sb.append(player.level).append(' ').append(player.id).append('\n');
+					sb.append(player.lv).append(' ').append(player.id).append('\n');
 				}
 			}
 		}
 
 		System.out.print(sb);
-	}
-
-	public static class Player implements Comparable<Player> {
-		int level;
-		String id;
-		boolean flag;
-
-		Player(int level, String id) {
-			this.level = level;
-			this.id = id;
-		}
-
-		@Override
-		public int compareTo(Player o) {
-			return this.id.compareTo(o.id);
-		}
 	}
 }
