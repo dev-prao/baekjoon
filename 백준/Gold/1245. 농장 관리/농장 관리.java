@@ -10,15 +10,13 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-	static int N, M, answer;
-
-	static Deque<int[]> q;
-
-	static int[][] map;
-	static boolean[][] isVisited, isPeak;
-
+	static int N, M, cnt;
 	static int[] dr = {-1, -1, -1, 0, 0, 1, 1, 1};
 	static int[] dc = {-1, 0, 1, -1, 1, -1, 0, 1};
+	static int[][] map;
+	static boolean[][] isVisited, isPeak;
+	static List<int[]> peaks = new ArrayList<>();
+	static Deque<int[]> q;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -45,7 +43,7 @@ public class Main {
 			}
 		}
 
-		System.out.println(answer);
+		System.out.println(cnt);
 	}
 
 	static void bfs(int r, int c) {
@@ -56,7 +54,7 @@ public class Main {
 
 		q = new ArrayDeque<>();
 		q.add(new int[]{r,c});
-		List<int[]> peaks = new ArrayList<>();
+		peaks.clear();
 
 		while (!q.isEmpty()) {
 			int[] cur = q.poll();
@@ -79,7 +77,7 @@ public class Main {
 			isPeak[peak[0]][peak[1]] = true;
 		}
 
-		answer++;
+		cnt++;
 	}
 
 	static boolean isValid(int r, int c) {
